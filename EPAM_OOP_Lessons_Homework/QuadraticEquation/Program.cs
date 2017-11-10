@@ -32,13 +32,9 @@ namespace QuadraticEquation
             else
             {
                 if (Discr > 0)
-                {
-                    double firstX = (-secondNum + Math.Sqrt(Discr)) / 2 * firstNum;
+                {double firstX = (-secondNum + Math.Sqrt(Discr)) / 2 * firstNum;
                     double secondX = (-secondNum - Math.Sqrt(Discr)) / 2 * firstNum;
-                    Console.WriteLine("U have two roots: first is " + firstX + " and second is " +secondX);
-           
-                }
-            }
+                    Console.WriteLine("U have two roots: first is " + firstX + " and second is " +secondX); }            }
             Console.ReadLine();
         }
         
