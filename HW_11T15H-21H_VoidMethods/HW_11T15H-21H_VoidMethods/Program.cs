@@ -6,50 +6,67 @@ using System.Threading.Tasks;
 
 namespace HW_11T15H_21H_VoidMethods
 {
-    class Program
+    public class Program
     {
-        public const int column = 10, row = 10;
 
         static void Main(string[] args)
         {
-            int[,] filledArray = FillingTwoDimentionalArrays();
-            PrintTwoDimentionalArrays(filledArray);
+            int index = 0, element = 5, x = 10, y = 10;
 
-            //Console.WriteLine("\r\nMax value in two-dimantional array by rows:");
-            int[] arrayWithMaxValuesInRows = MaxValueInRow(filledArray);
+            int[,] twoDimArray = FillingTwoDimentionalArrays(x, y);
+            int[] oneDimArray = FillingOneDimentionalArrays(x);
+            PrintTwoDimentionalArrays(twoDimArray);
+            PrintOneDimentionalArray(oneDimArray);
 
-            MaxValueInRow(filledArray);
+            int[] arrayWithMaxValuesInRows = MaxValueInRow(twoDimArray);
             PrintOneDimentionalArray(arrayWithMaxValuesInRows);
 
+            FindElement(oneDimArray, element, out index);
+            Console.WriteLine($"Element {element} found in given array {index} times");
+
+            int[] one = new int[] { 1, 2, 3, 5, 4, 5 };
+            int[] two = new int[] { 4, 1, 2, 3, 4 };
+            var result = Except(one, two);
+            PrintOneDimentionalArray(result);
 
             Console.ReadLine();
         }
 
-        public static int[,] FillingTwoDimentionalArrays()
+        static int[,] FillingTwoDimentionalArrays(int x, int y)
         {
-            int[,] exampleArray = new int[row, column];
+            int[,] exampleArray = new int[x, y];
             Random rand = new Random();
 
-            for (int i = 0; i < row; i++)
-                for (int j = 0; j < column; j++)
+            for (int i = 0; i < x; i++)
+                for (int j = 0; j < y; j++)
                     exampleArray[i, j] = rand.Next(-10, 10);
             return exampleArray;
         }
 
-        public static void PrintTwoDimentionalArrays(int[,] exampleArray)
+        static int[] FillingOneDimentionalArrays(int x)
+        {
+            int[] exampleArray = new int[x];
+            Random rand = new Random();
+
+            for (int i = 0; i < x; i++)
+                exampleArray[i] = rand.Next(-10, 10);
+            return exampleArray;
+        }
+
+        static void PrintTwoDimentionalArrays(int[,] exampleArray)
         {
             for (int i = 0; i < exampleArray.GetLength(0); i++)
                 for (int j = 0; j < exampleArray.GetLength(1); j++)
                     Console.Write(exampleArray[i, j] + (i != exampleArray.GetLength(0) && j != exampleArray.GetLength(1) - 1 ? ", " : "\r\n"));
         }
 
-        public static void PrintOneDimentionalArray(int[] exampleArray)
+        static void PrintOneDimentionalArray(int[] exampleArray)
         {
             for (int i = 0; i < exampleArray.Length; i++)
                 Console.Write(exampleArray[i] + (i != exampleArray.Length - 1 ? ", " : ""));
         }
 
-        public static int[] MaxValueInRow(int[,] exampleArray)
+        static int[] MaxValueInRow(int[,] exampleArray)
         {
             int maxValue = int.MinValue;
             int[] arrayWithMaxValuesInRows = new int[exampleArray.GetLength(0)];
@@ -64,10 +81,38 @@ namespace HW_11T15H_21H_VoidMethods
             return arrayWithMaxValuesInRows;
         }
 
+        static bool FindElement(int[] exampleArray, int element, out int index)
+        {
+            int number = 0;
+            for (int i = 0; i < exampleArray.Length; i++)
+            {
+                if (exampleArray[i] == element)
+                {
+                    number++;
+                }
+            }
+            index = number;
+            return number > 0;
+        }
 
-
-        private void Second(int[] Arr, string Str) { }
-        public static int Third(int[] frtArr, int[] secArr) { return 0; }
-        public double Fourth(int[] Arr, double Num) { return 0; }
+        static int[] Except(int[] firstExampleArray, int[] secondExampleArray)
+        {
+            int length = 0;
+            int temp = 0;
+            for (int i = 0; i < secondExampleArray.Length; i++)
+            {
+                if (FindElement(firstExampleArray, secondExampleArray[i], out temp))
+                    length += temp;
+            }
+            int[] resultArray = new int[firstExampleArray.Length - length];
+            for(int i = 0, j = 0; i < firstExampleArray.Length; i++)
+                if(!FindElement(secondExampleArray, firstExampleArray[i], out temp))
+                {
+                    resultArray[j] = firstExampleArray[i];
+                    j++;
+                }
+            return resultArray;
+        }
     }
+
 }
