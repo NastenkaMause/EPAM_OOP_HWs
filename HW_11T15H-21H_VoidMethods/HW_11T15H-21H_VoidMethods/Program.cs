@@ -16,10 +16,10 @@ namespace HW_11T15H_21H_VoidMethods
             int[,] twoDimArray = FillingTwoDimentionalArrays(x, y);
             int[] oneDimArray = FillingOneDimentionalArrays(x);
             PrintTwoDimentionalArrays(twoDimArray);
-            PrintOneDimentionalArray(oneDimArray);
+            PrintOneDimentionalArrays(oneDimArray);
 
             int[] arrayWithMaxValuesInRows = MaxValueInRow(twoDimArray);
-            PrintOneDimentionalArray(arrayWithMaxValuesInRows);
+            PrintOneDimentionalArrays(arrayWithMaxValuesInRows);
 
             FindElement(oneDimArray, element, out index);
             Console.WriteLine($"Element {element} found in given array {index} times");
@@ -27,7 +27,7 @@ namespace HW_11T15H_21H_VoidMethods
             int[] one = new int[] { 1, 2, 3, 5, 4, 5 };
             int[] two = new int[] { 4, 1, 2, 3, 4 };
             var result = Except(one, two);
-            PrintOneDimentionalArray(result);
+            PrintOneDimentionalArrays(result);
 
             Console.ReadLine();
         }
@@ -60,7 +60,7 @@ namespace HW_11T15H_21H_VoidMethods
                     Console.Write(exampleArray[i, j] + (i != exampleArray.GetLength(0) && j != exampleArray.GetLength(1) - 1 ? ", " : "\r\n"));
         }
 
-        static void PrintOneDimentionalArray(int[] exampleArray)
+        static void PrintOneDimentionalArrays(int[] exampleArray)
         {
             for (int i = 0; i < exampleArray.Length; i++)
                 Console.Write(exampleArray[i] + (i != exampleArray.Length - 1 ? ", " : ""));
@@ -95,23 +95,55 @@ namespace HW_11T15H_21H_VoidMethods
             return number > 0;
         }
 
-        static int[] Except(int[] firstExampleArray, int[] secondExampleArray)
+        public static int[] JoinArraysDistinct(int[] firstExampleArray, int[] secondExampleArray)
         {
-            int length = 0;
-            int temp = 0;
+            int[] resultArray = new int[firstExampleArray.Length + secondExampleArray.Length];
+            for (int i = 0; i < resultArray.Length; i++)
+                resultArray[i] = int.MinValue;
+
+            int count = 0;
+            for (int i = 0; i < firstExampleArray.Length; i++)
+            {
+                bool exist = false;
+                for (int j = 0; j < resultArray.Length; j++)
+                {
+                    if (resultArray[j] == int.MinValue)
+                        break;
+                    if (firstExampleArray[i] == resultArray[j])
+                    {
+                        exist = true;
+                        break;
+                    }
+                }
+                if (!exist)
+                {
+                    resultArray[count] = firstExampleArray[i];
+                    count++;
+                }
+            }
             for (int i = 0; i < secondExampleArray.Length; i++)
             {
-                if (FindElement(firstExampleArray, secondExampleArray[i], out temp))
-                    length += temp;
-            }
-            int[] resultArray = new int[firstExampleArray.Length - length];
-            for(int i = 0, j = 0; i < firstExampleArray.Length; i++)
-                if(!FindElement(secondExampleArray, firstExampleArray[i], out temp))
+                bool exist = false;
+                for (int j = 0; j < resultArray.Length; j++)
                 {
-                    resultArray[j] = firstExampleArray[i];
-                    j++;
+                    if (resultArray[j] == int.MinValue)
+                        break;
+                    if (secondExampleArray[i] == resultArray[j])
+                    {
+                        exist = true;
+                        break;
+                    }
                 }
-            return resultArray;
+                if (!exist)
+                {
+                    resultArray[count] = secondExampleArray[i];
+                    count++;
+                }
+            }
+            int[] finalArray = new int[count];
+            for (int i = 0; i < finalArray.Length; i++)
+                finalArray[i] = resultArray[i];
+            return finalArray;
         }
     }
 
