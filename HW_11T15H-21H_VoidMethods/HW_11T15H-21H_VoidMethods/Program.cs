@@ -11,62 +11,81 @@ namespace HW_11T15H_21H_VoidMethods
 
         static void Main(string[] args)
         {
-            int index = 0, element = 5, x = 10, y = 10;
+            int index = 0, element = 5, x = 10, y = 10, min = -10, max = 10;
 
-            int[,] twoDimArray = FillingTwoDimentionalArrays(x, y);
-            int[] oneDimArray = FillingOneDimentionalArrays(x);
-            PrintTwoDimentionalArrays(twoDimArray);
-            PrintOneDimentionalArrays(oneDimArray);
+            Console.WriteLine("\r\n\r\nInitial two dimentional array:\r\n");
+            int[,] twoDimArray = FillingArrayWithRandomValues(x, y, min, max);
+            PrintOutArray(twoDimArray);
 
-            int[] arrayWithMaxValuesInRows = MaxValueInRow(twoDimArray);
-            PrintOneDimentionalArrays(arrayWithMaxValuesInRows);
+            Console.WriteLine("\r\n\r\nInitial one dimentional array:\r\n");
+            int[] oneDimArray = FillingArrayWithRandomValues(x, min, max);
+            PrintOutArray(oneDimArray);
 
+            Console.WriteLine("\r\n\r\nFinding maximum value in each row of the array:\r\n");
+            int[] arrayWithMaxValuesInRows = MaxValueByRow(twoDimArray);
+            PrintOutArray(arrayWithMaxValuesInRows);
+
+            Console.WriteLine("\r\n\r\nFinding given element in the array:\r\n");
             FindElement(oneDimArray, element, out index);
             Console.WriteLine($"Element {element} found in given array {index} times");
 
-            int[] one = new int[] { 1, 2, 3, 5, 4, 5 };
-            int[] two = new int[] { 4, 1, 2, 3, 4 };
-            var result = Except(one, two);
-            PrintOneDimentionalArrays(result);
+            Console.WriteLine("\r\n\r\nJoining two arrays with distinct values only:\r\n");
+            int[] distinctArray = JoinArraysDistinct(FillingArrayWithRandomValues(x, min, max), FillingArrayWithRandomValues(x, min, max));
+            PrintOutArray(distinctArray);
 
             Console.ReadLine();
         }
 
-        static int[,] FillingTwoDimentionalArrays(int x, int y)
+        /// <summary>
+        /// Creates an array with given length and fills it with random values in given range
+        /// </summary>
+        /// <param name="lengthX">Length of the array by X asix</param>
+        /// <param name="lengthY">Length of the array by Y asix</param>
+        /// <param name="minThreshold">minimal value in the range of random values</param>
+        /// <param name="maxThreshold">maximum value in the range of random values</param>
+        /// <returns>Two dimentional array</returns>
+        static int[,] FillingArrayWithRandomValues(int lengthX, int lengthY, int minThreshold, int maxThreshold)
         {
-            int[,] exampleArray = new int[x, y];
+            int[,] array = new int[lengthX, lengthY];
             Random rand = new Random();
 
-            for (int i = 0; i < x; i++)
-                for (int j = 0; j < y; j++)
-                    exampleArray[i, j] = rand.Next(-10, 10);
-            return exampleArray;
+            for (int i = 0; i < lengthX; i++)
+                for (int j = 0; j < lengthY; j++)
+                    array[i, j] = rand.Next(minThreshold, maxThreshold);
+            return array;
         }
 
-        static int[] FillingOneDimentionalArrays(int x)
+        /// <summary>
+        /// Creates an array with given length and fills it with random values in given range
+        /// </summary>
+        /// <param name="length">Length of the array</param>
+        /// <param name="minThreshold">minimal value in the range of random values</param>
+        /// <param name="maxThreshold">maximum value in the range of random values</param>
+        /// <returns>One dimentional array</returns>
+        static int[] FillingArrayWithRandomValues(int length, int minThreshold, int maxThreshold)
         {
-            int[] exampleArray = new int[x];
+            int[] array = new int[length];
             Random rand = new Random();
 
-            for (int i = 0; i < x; i++)
-                exampleArray[i] = rand.Next(-10, 10);
-            return exampleArray;
+            for (int i = 0; i < length; i++)
+                array[i] = rand.Next(minThreshold, maxThreshold);
+            return array;
         }
 
-        static void PrintTwoDimentionalArrays(int[,] exampleArray)
+        static void PrintOutArray(int[,] exampleArray)
         {
             for (int i = 0; i < exampleArray.GetLength(0); i++)
                 for (int j = 0; j < exampleArray.GetLength(1); j++)
                     Console.Write(exampleArray[i, j] + (i != exampleArray.GetLength(0) && j != exampleArray.GetLength(1) - 1 ? ", " : "\r\n"));
         }
 
-        static void PrintOneDimentionalArrays(int[] exampleArray)
+        static void PrintOutArray(int[] exampleArray)
         {
             for (int i = 0; i < exampleArray.Length; i++)
-                Console.Write(exampleArray[i] + (i != exampleArray.Length - 1 ? ", " : ""));
+                Console.Write(exampleArray[i] + (i != exampleArray.Length - 1 ? ", " : "\r\n"));
         }
 
-        static int[] MaxValueInRow(int[,] exampleArray)
+        static int[] MaxValueByRow(int[,] exampleArray)
         {
             int maxValue = int.MinValue;
             int[] arrayWithMaxValuesInRows = new int[exampleArray.GetLength(0)];
@@ -146,5 +165,4 @@ namespace HW_11T15H_21H_VoidMethods
             return finalArray;
         }
     }
-
 }
